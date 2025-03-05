@@ -1,0 +1,18 @@
+artifact_path: Crack_Detection_Model
+flavors:
+  keras:
+    data: data
+    keras_backend: tensorflow
+    keras_version: 3.8.0
+    save_exported_model: false
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.keras
+    python_version: 3.9.8
+mlflow_version: 2.20.3
+model_size_bytes: 68645
+model_uuid: 2b2e26a0bd324704937a6628167b04b5
+run_id: ef41b25e12f145cfab7857abd95edad2
+utc_time_created: '2025-03-03 08:05:28.172439'

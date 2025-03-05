@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/849091784475933401/53b9ae72735a4780b78409f4c5760d10/artifacts
+deleted_time: 1740989226870
+end_time: 1740988518736
+entry_point_name: ''
+experiment_id: '849091784475933401'
+lifecycle_stage: deleted
+run_id: 53b9ae72735a4780b78409f4c5760d10
+run_name: CNN Model
+run_uuid: 53b9ae72735a4780b78409f4c5760d10
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740988518496
+status: 4
+tags: []
+user_id: saiprasath

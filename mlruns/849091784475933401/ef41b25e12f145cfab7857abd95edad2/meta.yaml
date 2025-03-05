@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/849091784475933401/ef41b25e12f145cfab7857abd95edad2/artifacts
+end_time: 1740989179661
+entry_point_name: ''
+experiment_id: '849091784475933401'
+lifecycle_stage: active
+run_id: ef41b25e12f145cfab7857abd95edad2
+run_name: CNN Model
+run_uuid: ef41b25e12f145cfab7857abd95edad2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1740989127970
+status: 3
+tags: []
+user_id: saiprasath
