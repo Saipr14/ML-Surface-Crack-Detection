@@ -6,7 +6,6 @@
 # Importing packages
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from collections import deque
 
 
@@ -66,7 +65,7 @@ def smart_percolation_fill(img):
     conservative_fill = percolation_fill(img, gap_threshold=15)
 
     # Stage 2: aggressive fill for longer cracks (connect major gaps)
-    aggressive_fill = percolation_fill(conservative_fill, gap_threshold=20)
+    aggressive_fill = percolation_fill(conservative_fill, gap_threshold=18)
 
     # Merge both with OR (preserves both detail and coverage)
     fine_made = cv2.bitwise_or(conservative_fill, aggressive_fill)
@@ -74,53 +73,22 @@ def smart_percolation_fill(img):
     return fine_made
 
 
-def remove_small_components(img, min_area=10):
-    contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    result = np.zeros_like(img)
-    for cnt in contours:
-        if cv2.contourArea(cnt) >= min_area:
-            cv2.drawContours(result, [cnt], -1, 255, thickness=cv2.FILLED)
-    return result
-
-
-def enhance_contrast_clahe(gray_img):
-    return
-
-
 def preprocess_image(img):
-    if len(img.shape) == 3:
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    else:
-        img_gray = img
-
-    # Optional: histogram equalization instead of CLAHE
-    img = cv2.equalizeHist(img_gray)
-
-    blurred = cv2.bilateralFilter(img, 9, 75, 75)
-
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (1, 1), 1)
+    blurred = cv2.bilateralFilter(blurred, 9, 15, 15)
+    # Use median to find optimal Canny thresholds
     v = np.median(blurred)
-    lower = max(0, int(0.66 * v))
-    upper = min(255, int(1.33 * v))
-
+    lower = int(max(0, 0.66 * v)) - 90
+    upper = int(min(255, 1.33 * v)) + 15
     edges = cv2.Canny(blurred, lower, upper)
+    kernel = np.ones((3, 3), np.uint8)
+    smoothened_edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel, iterations=1)
+    # Use custom percolation fill to connect broken cracks
+    filled_edges = smart_percolation_fill(smoothened_edges)
+    morph_kernel = np.ones((3, 3), np.uint8)
+    filled_edges = cv2.morphologyEx(
+        filled_edges, cv2.MORPH_CLOSE, morph_kernel, iterations=5
+    )
 
-    kernel = np.ones((2, 2), np.uint8)
-    filled_edges = smart_percolation_fill(edges)
-    opened = cv2.morphologyEx(filled_edges, cv2.MORPH_OPEN, kernel, iterations=1)
-    cleaned = remove_small_components(opened, min_area=10)
-    return cleaned
-
-
-# Function to plot the Image
-def plot_images(images, category):
-    cols = 5
-    rows = 2
-    fig, axes = plt.subplots(rows, cols, figsize=(5 * cols, 5 * rows))
-
-    for i, ax in enumerate(axes.flat):
-        ax.imshow(images[i], cmap="gray")
-        ax.set_title(f"{category} Image {i + 1}")
-        ax.axis("off")
-
-    plt.tight_layout()
-    plt.show()
+    return filled_edges

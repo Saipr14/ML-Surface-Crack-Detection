@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import cv2
-from src.modeling.CNN_inference import predict_image
+from src.modeling.Crack_intensity import predict_image
 # Later: from src.modeling.intensity import calculate_intensity
 
 st.title("🧱 Crack Detection & Intensity Analysis")

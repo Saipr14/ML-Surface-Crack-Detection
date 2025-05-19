@@ -1,11 +1,11 @@
 import nbconvert
 
 notebook_path = (
-    "C:/Users/saiprasath/ML-Surface-Crack-Detection/notebooks/Preprocessing.ipynb"
+    "C:/Users/saiprasath/ML-Surface-Crack-Detection/notebooks/Crack_intensity.ipynb"
 )
 
 output_path = (
-    "C:/Users/saiprasath/ML-Surface-Crack-Detection/src/modeling/preprocessing.py"
+    "C:/Users/saiprasath/ML-Surface-Crack-Detection/src/modeling/crack_intensity.py"
 )
 
 # Convert the notebook
