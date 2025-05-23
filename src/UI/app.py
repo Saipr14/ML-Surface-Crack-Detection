@@ -32,27 +32,46 @@ def load_model():
 
 model = load_model()
 
-# Streamlit app
-st.title("🧱 Surface Crack Detection")
-st.write("Upload an image to detect whether it contains a surface crack.")
+# ===================== UI Layout =====================
+
+st.markdown(
+    "<h2 style='text-align: center; color: steelblue;'>🧠 Smart Surface Crack Detector</h2>",
+    unsafe_allow_html=True,
+)
+st.markdown(
+    "<h4 style='text-align: center;'>Upload a surface image to analyze and classify cracks based on intensity.</h4>",
+    unsafe_allow_html=True,
+)
+
+st.markdown("---")
+
+# Model Info
+with st.expander("ℹ️ Model Information"):
+    st.markdown("""
+    - Model: Custom CNN (Logged via MLflow)
+    - Preprocessing: Grayscale → Gaussian Blur → Adaptive Edge Detection
+    - Crack Intensity Classification:
+        - **0** - Low  
+        - **1** - Medium  
+        - **2** - High
+    """)
 
 # File uploader
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("📤 Choose an image...", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
-    # Read image
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    # Ensure uploaded_file is valid before proceeding
+
     if img is None:
-        st.error("Error loading image. Please try a different image.")
+        st.error("❌ Error loading image. Please try a different one.")
     else:
-        # Convert to RGB if grayscale or single-channel
+        # Ensure image is 3-channel
         if len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
         elif img.shape[2] == 1:
             img = cv2.merge([img, img, img])
 
-        # Preprocess
+        # Preprocessing
         preprocessed = preprocess_image(img)
         resized = cv2.resize(preprocessed, (96, 96))
         normalized = resized / 255.0
@@ -66,12 +85,49 @@ if uploaded_file is not None:
 
         # Show intensity image if crack detected
         if predicted_class == 1:
-            intensity_image = process_crack_intensity(resized)
-            st.image(
-                intensity_image, caption="Crack Intensity Visualization", channels="BGR"
-            )
+            i_image = cv2.resize(resized, (227, 227))
+            intensity_image = process_crack_intensity(i_image)
 
-        # Display processed image and prediction
-        st.image(resized, caption="Processed Image")
-        st.markdown(f"### 🔍 Prediction: **{class_mapping[predicted_class]}**")
-        st.markdown(f"**Confidence:** `{prob:.4f}`")
+            st.markdown("---")
+            st.subheader("🎯 Crack Intensity Visualization")
+
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.image(
+                    intensity_image,
+                    caption="🛠️ Intensity Map",
+                    channels="BGR",
+                    use_container_width=True,
+                )
+        else:
+            st.markdown("---")
+            st.markdown(
+                "<h5 style='text-align: center; color: gray;'>No cracks detected in the image.</h5>",
+                unsafe_allow_html=True,
+            )
+            st.subheader("📸 Preprocessed Input Image")
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.image(
+                    resized,
+                    caption="🛠️ Processed Image",
+                    channels="gray",
+                    use_container_width=True,
+                )
+
+        # Display result
+        st.markdown("---")
+        st.subheader("🔍 Prediction Result")
+
+        if predicted_class == 1:
+            st.success(f"✅ Prediction: **{class_mapping[predicted_class]}**")
+        else:
+            st.warning(f"🧱 Prediction: **{class_mapping[predicted_class]}**")
+
+        st.info(f"📊 Confidence Score: `{prob:.4f}`")
+
+        st.markdown("---")
+        st.markdown(
+            "<h5 style='text-align: center; color: gray;'>© 2025 Automated Surface Crack Detection</h5>",
+            unsafe_allow_html=True,
+        )
