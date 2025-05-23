@@ -85,5 +85,7 @@ Support larger image resolutions for fine-grained inspection.
 
 ## 👨‍💻 Authors
 Saipr14 (Lead Developer)
+
 Mohamed Abdul Rahim (Intensity Module Contributor)
+
 Suchit (UI Contributor)
