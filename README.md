@@ -1,4 +1,7 @@
 # Final year Machine Learning Project
+```bash
+# Note: I have only forked the file structure from datalumina and I also didn't exactly used the whole structure only used the ones that I needed, So don't think this project is copied fully from that source."It is not".
+```
 # 🧱 Surface Crack Detection and Intensity Classification
 
 This project implements an automated surface crack detection system using a custom-trained Convolutional Neural Network (CNN) along with a rule-based crack intensity classifier. The system analyzes grayscale concrete images to detect cracks and assess their severity, providing actionable insights for structural maintenance teams.
