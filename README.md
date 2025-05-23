@@ -1,8 +1,7 @@
 # Final year Machine Learning Project
 ```bash
 # Note: I have only forked the file structure from datalumina and I also didn't exactly used the whole structure.I used the ones that I needed,
-
- So don't think this project is copied fully from that source."It is not".
+So don't think this project is copied fully from that source."It is not".
 ```
 # 🧱 Surface Crack Detection and Intensity Classification
 
