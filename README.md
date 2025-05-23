@@ -28,7 +28,7 @@ The images are typically sized 227x227 pixels and are suitable for deep learning
   - Red = High
 
 ## 📦 Project Structure
-
+```bash
 ├── app
 │ ├── main_app.py # Streamlit frontend
 ├── modeling
@@ -38,7 +38,7 @@ The images are typically sized 227x227 pixels and are suitable for deep learning
 │ └── (MLflow hosted model)
 ├── README.md
 └── requirements.txt
-
+```
 ## 🚀 Launching the Streamlit App
 
 ### 🔧 Step 1: Clone the Repository
